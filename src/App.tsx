@@ -1,67 +1,77 @@
-import { useRef, useEffect } from "react"
+import { useRef, useEffect } from "react";
+import styled from "styled-components";
+import { Acordion } from "./Acordion";
 
 
-
-
+const LayerTask = styled.div`
+  padding: 18px 11px;
+  width: 381px;
+  height: 306px;
+  position: absolute;
+  border-radius: 6px;
+  background: var(--gray-0, #a0b7e4);
+  box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.20),
+    0px 30px 70px 0px rgba(26, 34, 64, 0.15),
+    0px 0px 0px 1px rgba(136, 143, 170, 0.10);
+`;
 
 function App() {
-  console.log("рендер")
-  const ref = useRef<HTMLDivElement>(null)
-  console.log(ref)
+  const parentRef = useRef<HTMLDivElement>(null);
+  const childRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if(!ref || !ref.current) return
-    console.log("ok")
-    const element = ref.current;
+    if (!childRef.current || !parentRef.current) return;
+
+    const parentElement = parentRef.current;
+    const childElement = childRef.current;
     let offsetX: number, offsetY: number;
 
-    //движение
     const move = (e: MouseEvent) => {
-      element.style.left = `${e.clientX - offsetX}px`;
-      element.style.top = `${e.clientY - offsetY}px`;
-      console.log("element.style.left", element.style.left)
-      console.log("element.style.top", element.style.top)
+      const maxX = parentElement.clientWidth - childElement.clientWidth;
+      const maxY = parentElement.clientHeight - childElement.clientHeight;
+
+      let newX = e.clientX - offsetX;
+      let newY = e.clientY - offsetY;
+
+      // Ограничиваем перемещение в пределах родительского блока
+      newX = Math.min(Math.max(0, newX), maxX);
+      newY = Math.min(Math.max(0, newY), maxY);
+
+      childElement.style.left = `${newX}px`;
+      childElement.style.top = `${newY}px`;
     };
 
-    //
     const handleMouseDown = (e: MouseEvent) => {
-      element.style.cursor = "grabbing";
-      offsetX = e.clientX - element.offsetLeft;
-      offsetY = e.clientY - element.offsetTop;
-      element.addEventListener("mousemove", move);
+      childElement.style.cursor = "grabbing";
+      offsetX = e.clientX - childElement.offsetLeft;
+      offsetY = e.clientY - childElement.offsetTop;
+      document.addEventListener("mousemove", move);
     };
 
     const handleMouseUp = () => {
-      element.style.cursor = "grab";
-      element.removeEventListener("mousemove", move)
-    }
+      childElement.style.cursor = "grab";
+      document.removeEventListener("mousemove", move);
+    };
 
-    element.addEventListener("mousedown", handleMouseDown)
-    document.addEventListener("mouseup", handleMouseUp)
+    childElement.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      element.removeEventListener("mousedown", handleMouseDown)
-      document.removeEventListener("mouseup", handleMouseUp)
-    }
-  }, [ref])
-  
-  console.log(ref)
-  return(
-    <>
-      {/* <div style={{width: "1000px", height: "1000px"}}> */}
-        <div ref={ref} style={{width: "400px", height: "300px", backgroundColor: "gray", position: "absolute"}}>
-          привет
-        </div>
-      {/* </div> */}
-    </>
-  )
+      childElement.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={parentRef}
+      style={{ width: "80vw", height: "90vh", backgroundColor: "gray", position: "relative" }}
+    >
+      <LayerTask ref={childRef}>
+        <Acordion></Acordion>
+      </LayerTask>
+    </div>
+  );
 }
 
-export default App
-
-
-
-
-
-
-
+export default App;

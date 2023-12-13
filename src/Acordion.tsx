@@ -1,8 +1,48 @@
 import styled from "styled-components"
 import  Mark from "./assets/markTransport.svg"
 import Arrow from "./assets/arrow.svg"
+import { useState } from "react"
 
 const transportOnField = [
+    {
+        name: "Уборочная техника",
+        item: [
+            {
+                serialId: 8765,
+                article: "BELARUS-1221Т.2"
+            },
+            {
+                serialId: 8765,
+                article: "К-735М"
+            }
+        ]
+    },
+    {
+        name: "Уборочная техника",
+        item: [
+            {
+                serialId: 8765,
+                article: "BELARUS-1221Т.2"
+            },
+            {
+                serialId: 8765,
+                article: "К-735М"
+            }
+        ]
+    },
+     {
+        name: "Уборочная техника",
+        item: [
+            {
+                serialId: 8765,
+                article: "BELARUS-1221Т.2"
+            },
+            {
+                serialId: 8765,
+                article: "К-735М"
+            }
+        ]
+    },
     {
         name: "Уборочная техника",
         item: [
@@ -19,17 +59,20 @@ const transportOnField = [
 ]
 
 const Accoddion = styled.ul`
+    padding: 10px;
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    /* padding: 0; */
+    border-bottom: 1px solid #E9EDF5;
+    background-color: white;
 `
 const AccoddionHeader = styled.div`
     display: flex;
     box-sizing: border-box;
     position: relative;
     width: 100%;
-    background-color: "#fff";
-    padding: 10px;
+    
+    padding: 4px 10px;
     align-items: center;
     justify-content: space-between;
 `
@@ -54,7 +97,7 @@ const BoxIcon = styled.div`
 `
 
 const HeaderBox = styled.div`
-align-items: center;
+    align-items: center;
     display: flex;
     height: 20px;
 `
@@ -68,14 +111,35 @@ const NameTransport = styled.div`
     font-weight: 400;
     line-height: 20px; 
 `
+const Tab = styled.div`
+    width: 16px;
+    height: 16px;
+`
+
+const OpenWrapper = styled.div<{open: string}>`
+    /* background-color: blue; */
+    height: ${({open}) => open};
+    overflow: hidden;
+    transition: height 0.3s ease;
+`
 export const Acordion = () => {
-console.log(Mark)
+
+    const [openId, setOpenId] = useState(null)
+
+    const clickHandler = (id: any) => {
+        if(id === openId){
+            setOpenId(null)
+        } else {
+            setOpenId(id)
+        } 
+
+    }
     return(
         <>
-            {transportOnField.map(i => {
+            {transportOnField.map((i, id) => {
                 return(
                     <Accoddion>
-                        <AccoddionHeader>
+                        <AccoddionHeader onClick={() => clickHandler(id)}>
                             <HeaderBox>
                                 <Checkbox type="checkbox"></Checkbox>
                                 <BoxIcon>
@@ -85,14 +149,23 @@ console.log(Mark)
                             </HeaderBox>
                             <Arrow/>
                         </AccoddionHeader>
-                        {i.item.map(n => {
-                            return(
-                                <>
-                                    <div>{n.article}</div>
-                                    <div>{n.serialId}</div>
-                                </>
-                            )
-                        })}
+                        <OpenWrapper open={openId == id ? "100px" : "0px"}>
+                            {i.item.map(n => {
+                                return(
+                                    <AccoddionHeader>
+                                        <HeaderBox>
+                                            <Tab></Tab>
+                                            <BoxIcon>
+                                                <div>{n.serialId}</div>
+                                            </BoxIcon>
+                                            <NameTransport>
+                                                <div>{n.article}</div>
+                                            </NameTransport>
+                                        </HeaderBox>
+                                    </AccoddionHeader>
+                                )
+                            })}
+                        </OpenWrapper>
                     </Accoddion>
                 )
             })}

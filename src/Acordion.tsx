@@ -116,12 +116,15 @@ const Tab = styled.div`
     height: 16px;
 `
 
+
+
 const OpenWrapper = styled.div<{open: string}>`
     /* background-color: blue; */
-    height: ${({open}) => open};
+    // height: ${({open}) => open};
     overflow: hidden;
     transition: height 0.3s ease;
 `
+
 export const Acordion = () => {
 
     const [openId, setOpenId] = useState(null)

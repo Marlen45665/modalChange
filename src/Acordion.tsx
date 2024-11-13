@@ -126,6 +126,7 @@ export const Acordion = () => {
 
     const [openId, setOpenId] = useState(null)
 
+
     const clickHandler = (id: any) => {
         if(id === openId){
             setOpenId(null)
@@ -134,6 +135,7 @@ export const Acordion = () => {
         } 
 
     }
+    const array = [];
     return(
         <>
             {transportOnField.map((i, id) => {

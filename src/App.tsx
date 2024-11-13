@@ -5,9 +5,9 @@ import { Acordion } from "./Acordion";
 const LayerTask = styled.div`
   padding: 18px 11px;
   width: 381px;
-  height: 306px;
+  /* height: 306px; */
   position: absolute;
-  border-radius: 6px;
+  /* border-radius: 6px; */
   background: white;
   box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.20),
     0px 30px 70px 0px rgba(26, 34, 64, 0.15),

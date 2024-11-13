@@ -4,6 +4,7 @@ import { Acordion } from "./Acordion";
 
 const LayerTask = styled.div`
   padding: 18px 11px;
+  
   width: 381px;
   /* height: 306px; */
   position: absolute;
